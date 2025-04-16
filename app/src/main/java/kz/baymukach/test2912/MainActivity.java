@@ -1,14 +1,21 @@
 package kz.baymukach.test2912;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tvTime, tvCorrect, tvWrong, tvQuestion, tvA, tvB, tvC, tvD;
@@ -35,5 +42,142 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tvTime = findViewById(R.id.tvTime);
+        tvCorrect = findViewById(R.id.tvCorrect);
+        tvWrong = findViewById(R.id.tvWrong);
+        tvQuestion = findViewById(R.id.tvQuestion);
+        tvA = findViewById(R.id.tvA);
+        tvB = findViewById(R.id.tvB);
+        tvC = findViewById(R.id.tvC);
+        tvD = findViewById(R.id.tvD);
+        buttonNext = findViewById(R.id.buttonNext);
+
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetTime();
+                quiz();
+            }
+        });
+
+        tvA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseTimer();
+                userAnswer = "a";
+                if()
+            }
+        });
+        tvB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        tvC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        tvD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
+
+    public void finish(View view) {
+    }
+
+    public void quiz(){
+        startTime();
+        tvA.setBackgroundColor(Color.WHITE);
+        tvB.setBackgroundColor(Color.WHITE);
+        tvC.setBackgroundColor(Color.WHITE);
+        tvD.setBackgroundColor(Color.WHITE);
+
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                questionCount = (int) snapshot.getChildrenCount();
+                quizQuestion = snapshot.child(String.valueOf(questionNumber)).child("q").getValue().toString();
+                quizQuestionA = snapshot.child(String.valueOf(questionNumber)).child("a").getValue().toString();
+                quizQuestionB = snapshot.child(String.valueOf(questionNumber)).child("b").getValue().toString();
+                quizQuestionC = snapshot.child(String.valueOf(questionNumber)).child("c").getValue().toString();
+                quizQuestionD = snapshot.child(String.valueOf(questionNumber)).child("d").getValue().toString();
+                correctAnswer = snapshot.child(String.valueOf(questionNumber)).child("answer").getValue().toString();
+
+                tvQuestion.setText(quizQuestion);
+                tvA.setText(quizQuestionA);
+                tvB.setText(quizQuestionB);
+                tvC.setText(quizQuestionC);
+                tvD.setText(quizQuestionD);
+
+                if(questionNumber < questionCount){
+                    questionNumber++;
+                }else{
+                    Toast.makeText(MainActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void findAnswer(){
+        if(correctAnswer.equals("a")){
+            tvA.setBackgroundColor(Color.GREEN);
+        } else if (correctAnswer.equals("b")) {
+            tvB.setBackgroundColor(Color.GREEN);
+        }
+        else if (correctAnswer.equals("c")) {
+            tvC.setBackgroundColor(Color.GREEN);
+        }
+        else if (correctAnswer.equals("d")) {
+            tvD.setBackgroundColor(Color.GREEN);
+        }
+    }
+
+    private void startTime() {
+        countDownTimer = new CountDownTimer(leftTime, 1000) {
+            @Override
+            public void onTick(long l) {
+                leftTime = l;
+                updateCountDownText();
+            }
+
+
+            @Override
+            public void onFinish() {
+                timerContinue = false;
+                pauseTimer();
+                tvQuestion.setText("Uakyt Bitti");
+
+            }
+        }.start();
+        timerContinue = true;
+    }
+
+    private void pauseTimer() {
+        countDownTimer.cancel();
+        timerContinue = false;
+    }
+    private void updateCountDownText() {
+        int second = (int) (leftTime / 1000) % 60;
+        tvTime.setText("" + second);
+    }
+    public void  resetTime(){
+        leftTime = TOTAL_TIME;
+        updateCountDownText();
+    }
+
 }
