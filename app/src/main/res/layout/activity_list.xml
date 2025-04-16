@@ -10,6 +10,21 @@
     tools:context=".ListActivity">
 
 
+    <Button
+        android:onClick="GoTest"
+        android:text="Начать тест"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
+    <Button
+        android:text="Новый тест добавить"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="Списов тестов"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
