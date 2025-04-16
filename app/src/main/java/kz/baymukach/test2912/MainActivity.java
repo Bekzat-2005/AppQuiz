@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private int questionCount;
     private int questionNumber = 1;
     private int userCorrect = 0;
-    private int userWrong = 1;
+    private int userWrong = 0;
     private String userAnswer;
     private CountDownTimer countDownTimer;
     private static final long TOTAL_TIME = 15000;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         tvD = findViewById(R.id.tvD);
         buttonNext = findViewById(R.id.buttonNext);
 
+        quiz();
+
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,24 +68,69 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 pauseTimer();
                 userAnswer = "a";
-                if()
+                if (correctAnswer.equals(userAnswer)) {
+                    tvA.setBackgroundColor(Color.GREEN);
+                    userCorrect++;
+                    tvCorrect.setText(""+ userCorrect);
+                }else{
+                    tvA.setBackgroundColor(Color.RED);
+                    userWrong++;
+                    tvWrong.setText(""+ userWrong);
+                    findAnswer();
+                }
             }
         });
         tvB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pauseTimer();
+                userAnswer = "b";
+                if (correctAnswer.equals(userAnswer)) {
+                    tvB.setBackgroundColor(Color.GREEN);
+                    userCorrect++;
+                    tvCorrect.setText(""+ userCorrect);
+                }else{
+                    tvB.setBackgroundColor(Color.RED);
+                    userWrong++;
+                    tvWrong.setText(""+ userWrong);
+                    findAnswer();
+                }
 
             }
         });
         tvC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pauseTimer();
+                userAnswer = "c";
+                if (correctAnswer.equals(userAnswer)) {
+                    tvC.setBackgroundColor(Color.GREEN);
+                    userCorrect++;
+                    tvCorrect.setText(""+ userCorrect);
+                }else{
+                    tvC.setBackgroundColor(Color.RED);
+                    userWrong++;
+                    tvWrong.setText(""+ userWrong);
+                    findAnswer();
+                }
 
             }
         });
         tvD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pauseTimer();
+                userAnswer = "d";
+                if (correctAnswer.equals(userAnswer)) {
+                    tvD.setBackgroundColor(Color.GREEN);
+                    userCorrect++;
+                    tvCorrect.setText(""+ userCorrect);
+                }else{
+                    tvD.setBackgroundColor(Color.RED);
+                    userWrong++;
+                    tvWrong.setText(""+ userWrong);
+                    findAnswer();
+                }
 
             }
         });
